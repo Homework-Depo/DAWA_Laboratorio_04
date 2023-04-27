@@ -459,50 +459,9 @@
                                         <div class="chat-user">
                                             <img class="chat-avatar" src="img/a1.jpg" alt="" >
                                             <div class="chat-user-name">
-                                                <a href="#">Monica Smith</a>
-                                            </div>
-                                        </div>
-                                        <div class="chat-user">
-                                            <span class="pull-right label label-primary">Online</span>
-                                            <img class="chat-avatar" src="img/a2.jpg" alt="" >
-                                            <div class="chat-user-name">
                                                 <a href="#">Michael Smith</a>
                                             </div>
                                         </div>
-                                        <div class="chat-user">
-                                            <span class="pull-right label label-primary">Online</span>
-                                            <img class="chat-avatar" src="img/a3.jpg" alt="" >
-                                            <div class="chat-user-name">
-                                                <a href="#">Janet Smith</a>
-                                            </div>
-                                        </div>
-                                        <div class="chat-user">
-                                            <img class="chat-avatar" src="img/a5.jpg" alt="" >
-                                            <div class="chat-user-name">
-                                                <a href="#">Alice Smith</a>
-                                            </div>
-                                        </div>
-                                        <div class="chat-user">
-                                            <img class="chat-avatar" src="img/a6.jpg" alt="" >
-                                            <div class="chat-user-name">
-                                                <a href="#">Monica Cale</a>
-                                            </div>
-                                        </div>
-                                        <div class="chat-user">
-                                            <img class="chat-avatar" src="img/a2.jpg" alt="" >
-                                            <div class="chat-user-name">
-                                                <a href="#">Mark Jordan</a>
-                                            </div>
-                                        </div>
-                                        <div class="chat-user">
-                                            <span class="pull-right label label-primary">Online</span>
-                                            <img class="chat-avatar" src="img/a3.jpg" alt="" >
-                                            <div class="chat-user-name">
-                                                <a href="#">Janet Smith</a>
-                                            </div>
-                                        </div>
-
-
                                     </div>
 
                                 </div>
@@ -515,7 +474,7 @@
 
                                     <div class="form-group">
                                         <form id="chat-form">
-                                          <input type="text" id="chat-input" class="form-control message-input" name="message" placeholder="Enter message text"></textarea>
+                                          <input type="text" id="chat-input" class="form-control message-input" name="message" placeholder="Enter message text" autocomplete="off"></textarea>
                                         </form>
                                     </div>
 
@@ -671,6 +630,32 @@
     return formattedDate;
   }
 
+  function leftMessage(msg) {
+
+    const chatMessage = $('<div>').addClass('chat-message left');
+    const messageAvatar = $('<img>').addClass('message-avatar').attr('src', 'img/a1.jpg').attr('alt', '');
+    const message = $('<div>').addClass('message');
+    const messageAuthor = $('<a>').addClass('message-author').attr('href', '#').text('Michael Smith');
+    const messageDate = $('<span>').addClass('message-date').text(getCurrentDateTimeSpanish());
+    const messageContent = $('<span>').addClass('message-content').text(msg);
+
+    $('#chat-discussion').append(chatMessage.append(messageAvatar).append(message.append(messageAuthor).append(messageDate).append(messageContent)));
+
+  }
+
+  function rightMessage(msg) { 
+
+  const chatMessage = $('<div>').addClass('chat-message right');
+  const messageAvatar = $('<img>').addClass('message-avatar').attr('src', 'img/a4.jpg').attr('alt', '');
+  const message = $('<div>').addClass('message');
+  const messageAuthor = $('<a>').addClass('message-author').attr('href', '#').text('Karl Jordan');
+  const messageDate = $('<span>').addClass('message-date').text(getCurrentDateTimeSpanish());
+  const messageContent = $('<span>').addClass('message-content').text(msg);
+
+  $('#chat-discussion').append(chatMessage.append(messageAvatar).append(message.append(messageAuthor).append(messageDate).append(messageContent)));
+
+  }
+
   const socket = io()
 
   const messages = document.querySelector('#chat-discussion')
@@ -683,49 +668,16 @@
     chatInput.value = '';
   });
 
-  socket.on('chat message', (msg) => {
-    console.log(`Socoket Id: ${socket.id} - Sender Socket ID: ${msg.senderSocketId}`)
-    if (socket.id !== msg.senderSocketId) {
-
-      console.log(socket.id)
-      // Left Comment
-      var $parentDiv = $("<div>").addClass("chat-message left");
-
-      var $img = $("<img>").addClass("message-avatar").attr("src", "img/a1.jpg").attr("alt", "");
-
-      var $messageDiv = $("<div>").addClass("message");
-
-      var $authorAnchor = $("<a>").addClass("message-author").attr("href", "#").text("Michael Smith");
-
-      var $dateSpan = $("<span>").addClass("message-date").text(getCurrentDateTimeSpanish());
-
-      var $contentSpan = $("<span>").addClass("message-content").text(msg);
-
-      $messageDiv.append($authorAnchor, $dateSpan, $contentSpan);
-      $parentDiv.append($img, $messageDiv);
-
-      $('#chat-discussion').append($parentDiv)
-
-    } else {
-    
-    // Right Comment
-    var divElement = $("<div>").addClass("chat-message right");
-    var imgElement = $("<img>").addClass("message-avatar").attr("src", "img/a4.jpg").attr("alt", "");
-    var messageElement = $("<div>").addClass("message");
-    var authorElement = $("<a>").addClass("message-author").attr("href", "#").text("Karl Jordan");
-    var dateElement = $("<span>").addClass("message-date").text(getCurrentDateTimeSpanish());
-    var contentElement = $("<span>").addClass("message-content").text(msg);
-
-    messageElement.append(authorElement, dateElement, contentElement);
-    divElement.append(imgElement, messageElement);
-    }
-
+  socket.on('rightMessage', (msg) => {
+    rightMessage(msg)
   });
   
+  socket.on('leftMessage', (msg) => {
+    leftMessage(msg)
+  });
 </script>
 
 </body>
-
 
 <!-- Mirrored from webapplayers.com/inspinia_admin-v2.5/chat_view.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 10 Aug 2016 14:34:43 GMT -->
 </html>

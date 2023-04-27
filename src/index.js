@@ -17,8 +17,10 @@ io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
   
   socket.on('chat message', (msg) => {
-    console.log(`Message: ${msg}`);
-    io.emit('chat message', msg);
+    socket.broadcast.emit("rightMessage", msg)
+    socket.emit("leftMessage", msg)
+    //console.log(`Message: ${msg}`);
+    //io.emit('chat message', msg);
   });
 
   socket.on('disconnect', () => {
